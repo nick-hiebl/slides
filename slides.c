@@ -75,6 +75,10 @@ int next_slide(FILE *fin, struct slide *slide) {
 void print_line(char *s) {
     if (starts_with(s, "#red")) {
         printf(KRED "%s" KNRM, s + after(s, "#red"));
+    } else if (starts_with(s, "#green")) {
+        printf(KGRN "%s" KNRM, s + after(s, "#green"));
+    } else if (starts_with(s, "#yellow")) {
+        printf(KYEL "%s" KNRM, s + after(s, "#yellow"));
     } else if (starts_with(s, "###")) {
         printf(BOLD "%s" KNRM, s + after(s, "###"));
     } else if (starts_with(s, "##")) {
