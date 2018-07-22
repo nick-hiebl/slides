@@ -81,6 +81,14 @@ void print_line(char *s) {
         printf(KGRN "%s" KNRM, s + after(s, "#green"));
     } else if (starts_with(s, "#yellow")) {
         printf(KYEL "%s" KNRM, s + after(s, "#yellow"));
+    } else if (starts_with(s, "#blue")) {
+        printf(KBLU "%s" KNRM, s + after(s, "#blue"));
+    } else if (starts_with(s, "#magenta")) {
+        printf(KMAG "%s" KNRM, s + after(s, "#magenta"));
+    } else if (starts_with(s, "#cyan")) {
+        printf(KCYN "%s" KNRM, s + after(s, "#cyan"));
+    } else if (starts_with(s, "#white")) {
+        printf(KWHT "%s" KNRM, s + after(s, "#white"));
     } else if (starts_with(s, "###")) {
         printf(BOLD "%s" KNRM, s + after(s, "###"));
     } else if (starts_with(s, "##")) {
