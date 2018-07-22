@@ -5,6 +5,7 @@
 #define NEXT 'N'
 #define BACK 'B'
 #define QUIT 'Q'
+#define JUMP 'J'
 
 struct action {
     int action;

@@ -31,6 +31,9 @@ struct action get_input() {
         case QUIT:
             in.action = QUIT;
             break;
+        case JUMP:
+            in.action = JUMP;
+            break;
         default:
             in.action = NEXT;
             num = 1;
