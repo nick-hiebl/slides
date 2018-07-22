@@ -100,9 +100,9 @@ void print_line(char *s) {
     }
 }
 
-void print_slide(struct slide *slide, struct winsize w) {
-    printf("%dx%d\n", slide->width, slide->lines);
-    int j = 0;
+void print_slide(struct slide *slide, struct winsize w, int number) {
+    printf("Slide %d | %dx%d\n", number, slide->width, slide->lines);
+    int j = 1;
     int pre_space = (w.ws_row - slide->lines) / 2 - 2;
     while (j < pre_space) {
         putchar('\n');
@@ -118,7 +118,7 @@ void print_slide(struct slide *slide, struct winsize w) {
         print_line(slide->content[i]);
         j++;
     }
-    while (j < w.ws_row - 2) {
+    while (j < w.ws_row - 1) {
         putchar('\n');
         j++;
     }
@@ -137,17 +137,44 @@ int main(int argc, char **argv) {
     struct slide slide;
     FILE *f = fopen(argv[1], "r");
 
+    int slide_number = 0;
 
     struct action action;
     action.action = NOOP;
-    while (action.action != QUIT) {
-        if (!next_slide(f, &slide)) break;
-        print_slide(&slide, w);
+
+    int slide_exists = next_slide(f, &slide);
+    slide_number++;
+
+    while (slide_exists && action.action != QUIT) {
+        print_slide(&slide, w, slide_number);
 
         action = get_input();
-
+        int k;
+        switch (action.action) {
+            case NEXT:
+                k = action.value + slide_number;
+                for (; slide_exists && slide_number < k;) {
+                    slide_exists = next_slide(f, &slide);
+                    slide_number++;
+                }
+                break;
+            case BACK:
+                action.action = JUMP;
+                action.value = slide_number - action.value;
+            case JUMP:
+                if (action.value < slide_number) {
+                    fclose(f);
+                    f = fopen(argv[1], "r");
+                    slide_number = 0;
+                }
+                for (;slide_exists && slide_number < action.value;) {
+                    slide_exists = next_slide(f, &slide);
+                    slide_number++;
+                }
+        }
     }
 
+    fclose(f);
 
     return 0;
 }
